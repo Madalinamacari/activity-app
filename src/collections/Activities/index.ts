@@ -1,59 +1,19 @@
-import { CollectionConfig } from 'payload/types'
-
+import { CollectionConfig } from 'payload'
 export const Activities: CollectionConfig = {
   slug: 'activities',
-  labels: {
-    singular: 'Activity',
-    plural: 'Activities',
-  },
-  admin: {
-    useAsTitle: 'title',
-  },
   fields: [
-    {
-      name: 'edition',
-      type: 'relationship',
-      relationTo: 'festival-editions',
-      required: true,
-      hasMany: false,
-    },
-    { name: 'title', type: 'text', required: true },
+    { name: 'edition', type: 'relationship', relationTo: 'festival-editions' },
+    { name: 'edition', type: 'relationship', relationTo: 'festival-editions', hasMany: false },
+    { name: 'title', type: 'text' },
     { name: 'description', type: 'richText' },
     {
       name: 'type',
       type: 'select',
-      options: [
-        { label: 'Expo', value: 'expo' },
-        { label: 'Talk', value: 'talk' },
-        { label: 'Workshop', value: 'workshop' },
-        { label: 'Social', value: 'social' },
-        { label: 'Entertainment', value: 'entertainment' },
-      ],
-      required: true,
+      options: ['expo', 'talk', 'workshop', 'social', 'entertainment'],
     },
-    {
-      name: 'audience',
-      type: 'checkbox',
-      options: [
-        { label: 'General', value: 'general' },
-        { label: 'Developers', value: 'developers' },
-        { label: 'Students', value: 'students' },
-        { label: 'Professionals', value: 'professionals' },
-      ],
-      hasMany: true,
-    },
-    {
-      name: 'guests',
-      type: 'relationship',
-      relationTo: 'guests',
-      hasMany: true,
-    },
-    {
-      name: 'section',
-      type: 'relationship',
-      relationTo: 'festival-sections',
-      required: false,
-      hasMany: false,
-    },
+    { name: 'audience', type: 'array', fields: [{ name: 'audienceType', type: 'text' }] }, // Checkbox array needed, but no options provided in the requirements
+    { name: 'guests', type: 'relationship', relationTo: 'guests', hasMany: true },
+    { name: 'section', type: 'relationship', relationTo: 'festival-sections' },
+    { name: 'section', type: 'relationship', relationTo: 'festival-sections', hasMany: false },
   ],
 }

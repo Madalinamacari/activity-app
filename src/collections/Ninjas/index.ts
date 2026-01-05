@@ -1,16 +1,9 @@
-import { CollectionConfig } from 'payload/types'
+import { CollectionConfig } from 'payload'
 
 export const Ninjas: CollectionConfig = {
   slug: 'ninjas',
-  labels: {
-    singular: 'Ninja',
-    plural: 'Ninjas',
-  },
-  admin: {
-    useAsTitle: 'childName',
-  },
   fields: [
-    { name: 'childName', type: 'text', required: true },
+    { name: 'childName', type: 'text' },
     { name: 'age', type: 'number' },
     { name: 'usefulInfo', type: 'textarea' },
     { name: 'guardianName', type: 'text' },

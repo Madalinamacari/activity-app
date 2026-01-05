@@ -1,42 +1,25 @@
-import { CollectionConfig } from 'payload/types'
-
+import { CollectionConfig } from 'payload'
 export const Initiatives: CollectionConfig = {
   slug: 'initiatives',
-  labels: {
-    singular: 'Initiative',
-    plural: 'Initiatives',
-  },
-  admin: {
-    useAsTitle: 'title',
-  },
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'description',
-      type: 'richText',
-    },
-    {
-      name: 'image',
-      type: 'relationship',
-      relationTo: 'media',
-      hasMany: false,
-    },
+    { name: 'title', type: 'text', required: true },
+    { name: 'description', type: 'richText' },
+    { name: 'image', type: 'upload', relationTo: 'media' },
+    { name: 'image', type: 'upload', relationTo: 'media', hasMany: false },
     {
       name: 'siteLink',
       type: 'text',
-      required: false,
-      admin: {
-        description: 'URL of the initiative site',
-      },
-      validate: (value) => {
-        if (value && !value.match(/^https?:\/\/.+$/)) {
-          return 'Must be a valid URL starting with http:// or https://'
+      validate: (val: unknown) => {
+        if (!val) return true
+        if (typeof val !== 'string') return 'siteLink must be a string'
+        if (val.startsWith('/')) return true
+        try {
+          const parsed = new URL(val)
+          if (['http:', 'https:'].includes(parsed.protocol)) return true
+          return 'siteLink must use http or https protocol'
+        } catch (_err) {
+          return 'siteLink must be a valid absolute URL (https://example.com) or a relative path starting with /'
         }
-        return true
       },
     },
   ],

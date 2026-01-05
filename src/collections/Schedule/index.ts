@@ -1,45 +1,14 @@
-import { CollectionConfig } from 'payload/types'
-
-export const Schedule: CollectionConfig = {
-  slug: 'schedule',
-  labels: {
-    singular: 'Schedule',
-    plural: 'Schedules',
-  },
-  admin: {
-    useAsTitle: 'startTime',
-  },
+import { CollectionConfig } from 'payload'
+export const Schedules: CollectionConfig = {
+  slug: 'schedules',
   fields: [
-    {
-      name: 'edition',
-      type: 'relationship',
-      relationTo: 'festival-editions',
-      required: true,
-      hasMany: false,
-    },
-    {
-      name: 'startTime',
-      type: 'date',
-      required: true,
-    },
-    {
-      name: 'endTime',
-      type: 'date',
-      required: true,
-    },
-    {
-      name: 'activity',
-      type: 'relationship',
-      relationTo: 'activities',
-      required: true,
-      hasMany: false,
-    },
-    {
-      name: 'location',
-      type: 'relationship',
-      relationTo: 'locations',
-      required: true,
-      hasMany: false,
-    },
+    { name: 'edition', type: 'relationship', relationTo: 'festival-editions' },
+    { name: 'edition', type: 'relationship', relationTo: 'festival-editions', hasMany: false },
+    { name: 'startTime', type: 'date' },
+    { name: 'endTime', type: 'date' },
+    { name: 'activity', type: 'relationship', relationTo: 'activities' },
+    { name: 'location', type: 'relationship', relationTo: 'locations' },
+    { name: 'activity', type: 'relationship', relationTo: 'activities', hasMany: false },
+    { name: 'location', type: 'relationship', relationTo: 'locations', hasMany: false },
   ],
 }

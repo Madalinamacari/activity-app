@@ -1,53 +1,38 @@
-import { CollectionConfig } from 'payload/types'
-
+import { CollectionConfig } from 'payload'
 export const Guests: CollectionConfig = {
   slug: 'guests',
-  labels: {
-    singular: 'Guest',
-    plural: 'Guests',
-  },
-  admin: {
-    useAsTitle: 'name',
-  },
   fields: [
-    {
-      name: 'edition',
-      type: 'relationship',
-      relationTo: 'festival-editions',
-      required: true,
-      hasMany: false,
-    },
-    { name: 'name', type: 'text', required: true },
+    { name: 'edition', type: 'relationship', relationTo: 'festival-editions' },
+    { name: 'edition', type: 'relationship', relationTo: 'festival-editions', hasMany: false },
+    { name: 'name', type: 'text' },
     { name: 'organization', type: 'text' },
     {
       name: 'guestType',
-      type: 'checkbox',
-      options: [
-        { label: 'Speaker', value: 'speaker' },
-        { label: 'Workshop Holder', value: 'workshop_holder' },
-        { label: 'Exhibitor', value: 'exhibitor' },
+      type: 'group',
+      admin: { description: 'Mark roles that apply' },
+      fields: [
+        { name: 'speaker', type: 'checkbox', label: 'Speaker' },
+        { name: 'workshop_holder', type: 'checkbox', label: 'Workshop holder' },
+        { name: 'exhibitor', type: 'checkbox', label: 'Exhibitor' },
       ],
-      hasMany: true,
     },
     { name: 'bio', type: 'richText' },
-    {
-      name: 'photo',
-      type: 'relationship',
-      relationTo: 'media',
-      hasMany: false,
-    },
+    { name: 'photo', type: 'upload', relationTo: 'media' },
+    { name: 'photo', type: 'upload', relationTo: 'media', hasMany: false },
     {
       name: 'website',
       type: 'text',
-      required: false,
-      admin: {
-        description: 'Website URL',
-      },
-      validate: (value) => {
-        if (value && !value.match(/^https?:\/\/.+$/)) {
-          return 'Must be a valid URL starting with http:// or https://'
+      validate: (val: unknown) => {
+        if (!val) return true
+        if (typeof val !== 'string') return 'siteLink must be a string'
+        if (val.startsWith('/')) return true
+        try {
+          const parsed = new URL(val)
+          if (['http:', 'https:'].includes(parsed.protocol)) return true
+          return 'siteLink must use http or https protocol'
+        } catch (_err) {
+          return 'siteLink must be a valid absolute URL (https://example.com) or a relative path starting with /'
         }
-        return true
       },
     },
   ],

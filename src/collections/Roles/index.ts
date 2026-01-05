@@ -1,17 +1,7 @@
-import { CollectionConfig } from 'payload/types'
+import { CollectionConfig } from 'payload'
 
 export const Roles: CollectionConfig = {
   slug: 'roles',
-  labels: {
-    singular: 'Role',
-    plural: 'Roles',
-  },
-  admin: {
-    useAsTitle: 'name',
-  },
-  access: {
-    read: () => true,
-  },
   fields: [
     {
       name: 'name',
